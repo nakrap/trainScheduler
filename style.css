@@ -1,0 +1,22 @@
+
+.jumbotron {
+    background-color: black; 
+    color: white;
+    margin-bottom: 50px;
+}
+
+.card-title {
+    border: 2px solid black;
+    border-radius: 3px;
+    background-color: black;
+    color: white;
+    padding: 5px;
+}
+
+#current-train {
+    margin-bottom: 50px;
+}
+
+#new-train {
+    margin-bottom: 400px;
+}

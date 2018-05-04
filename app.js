@@ -29,7 +29,7 @@ var config = {
     // Grabs user input
     var trainName = $("#train-name-input").val().trim();
     var traindestination = $("#destination-input").val().trim();
-    var trainStart = moment($("#start-input").val().trim(), "DD/MM/YY").format("X");
+    var trainStart = moment($("#start-input").val().trim(), "HH:mm").format("X");
     var trainfreq = $("#freq-input").val().trim();
   
     // Creates local "temporary" object for holding train data
@@ -44,13 +44,13 @@ var config = {
     database.ref().push(newtrain);
   
     // Logs everything to console
-    console.log(newtrain.name);
-    console.log(newtrain.destination);
+    // console.log(newtrain.name);
+    // console.log(newtrain.destination);
     console.log(newtrain.start);
-    console.log(newtrain.freq);
+    // console.log(newtrain.freq);
   
     // Alert
-    alert("train successfully added");
+    alert("Train" + newtrain.name + "successfully added");
   
     // Clears all of the text-boxes
     $("#train-name-input").val("");
@@ -62,7 +62,7 @@ var config = {
   // 3. Create Firebase event for adding train to the database and a row in the html when a user adds an entry
   database.ref().on("child_added", function(childSnapshot, prevChildKey) {
   
-    console.log(childSnapshot.val());
+    // console.log(childSnapshot.val());
   
     // Store everything into a variable.
     var trainName = childSnapshot.val().name;
@@ -71,26 +71,25 @@ var config = {
     var trainfreq = childSnapshot.val().freq;
   
     // train Info
-    console.log(trainName);
-    console.log(traindestination);
-    console.log(trainStart);
-    console.log(trainfreq);
+    // console.log(trainName);
+    // console.log(traindestination);
+    // console.log(trainStart);
+    // console.log(trainfreq);
   
     // Prettify the train start
-    var trainStartPretty = moment.unix(trainStart).format("MM/DD/YY");
+    var trainStartPretty = moment.unix(trainStart).format("HH:mm");
   
-    // Calculate the months worked using hardcore math
     // To calculate the months worked
     var trainMonths = moment().diff(moment(trainStart, "X"), "months");
     console.log(trainMonths);
   
     // Calculate the total billed freq
     var trainBilled = trainMonths * trainfreq;
-    console.log(trainBilled);
+    // console.log(trainBilled);
   
     // Add each train's data into the table
-    $("#train-table > tbody").append("<tr><td>" + trainName + "</td><td>" + traindestination + "</td><td>" +
-    trainStartPretty + "</td><td>" + trainMonths + "</td><td>" + trainfreq + "</td><td>" + trainBilled + "</td></tr>");
+    $("#train-table > tbody").append("<tr><td>" + trainName + "</td><td>" + traindestination + "</td><td>" 
+    + trainfreq + "</td><td>" + trainMonths + "</td><td>" + trainBilled + "</td></tr>");
   });
   
   // Example Time Math
