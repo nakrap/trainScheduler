@@ -1,12 +1,3 @@
-/* global firebase moment */
-// Steps to complete:
-
-// 1. Initialize Firebase
-// 2. Create button for adding new trains - then update the html + update the database
-// 3. Create a way to retrieve trains from the train database.
-// 4. Create a way to calculate the months worked. Using difference between start and current time.
-//    Then use moment.js formatting to set difference in months.
-// 5. Calculate Total billed
 
 // 1. Initialize Firebase
 var config = {
@@ -21,36 +12,42 @@ var config = {
   firebase.initializeApp(config);
   
   var database = firebase.database();
+  var currentTime = moment();
+
   
   // 2. Button for adding trains
   $("#add-train-btn").on("click", function(event) {
-    event.preventDefault();
+        event.preventDefault();
   
     // Grabs user input
     var trainName = $("#train-name-input").val().trim();
     var traindestination = $("#destination-input").val().trim();
-    var trainStart = moment($("#start-input").val().trim(), "HH:mm").format("X");
+    var trainStart = $("#start-input").val().trim();
     var trainfreq = $("#freq-input").val().trim();
-  
+
+
+    var firstTrainConverted = moment(trainStart, "HH:mm");
+
+    var difference = currentTime.diff(moment(firstTrainConverted), "minutes");
+    var remainder = difference % trainfreq;
+    var minUntilTrain = trainfreq - remainder;
+    var nextTrain = moment().add(minUntilTrain, "minutes").format("HH:mm a");
+
     // Creates local "temporary" object for holding train data
     var newtrain = {
-      name: trainName,
-      destination: traindestination,
-      start: trainStart,
-      freq: trainfreq
+        name: trainName,
+        destination: traindestination,
+        start: trainStart,
+        freq: trainfreq,
+        min: minUntilTrain,
+        next: nextTrain
     };
   
     // Uploads train data to the database
     database.ref().push(newtrain);
-  
-    // Logs everything to console
-    // console.log(newtrain.name);
-    // console.log(newtrain.destination);
-    console.log(newtrain.start);
-    // console.log(newtrain.freq);
-  
+
     // Alert
-    alert("Train" + newtrain.name + "successfully added");
+    alert("Train " + newtrain.name + " successfully added");
   
     // Clears all of the text-boxes
     $("#train-name-input").val("");
@@ -60,7 +57,7 @@ var config = {
   });
   
   // 3. Create Firebase event for adding train to the database and a row in the html when a user adds an entry
-  database.ref().on("child_added", function(childSnapshot, prevChildKey) {
+  database.ref().on("child_added", function(childSnapshot) {
   
     // console.log(childSnapshot.val());
   
@@ -69,34 +66,13 @@ var config = {
     var traindestination = childSnapshot.val().destination;
     var trainStart = childSnapshot.val().start;
     var trainfreq = childSnapshot.val().freq;
+    var min = childSnapshot.val().min;
+    var next = childSnapshot.val().next;
   
-    // train Info
-    // console.log(trainName);
-    // console.log(traindestination);
-    // console.log(trainStart);
-    // console.log(trainfreq);
-  
-    // Prettify the train start
-    var trainStartPretty = moment.unix(trainStart).format("HH:mm");
-  
-    // To calculate the months worked
-    var trainMonths = moment().diff(moment(trainStart, "X"), "months");
-    console.log(trainMonths);
-  
-    // Calculate the total billed freq
-    var trainBilled = trainMonths * trainfreq;
-    // console.log(trainBilled);
   
     // Add each train's data into the table
     $("#train-table > tbody").append("<tr><td>" + trainName + "</td><td>" + traindestination + "</td><td>" 
-    + trainfreq + "</td><td>" + trainMonths + "</td><td>" + trainBilled + "</td></tr>");
+    + trainfreq + "</td><td>" + next + "</td><td>" + min + "</td></tr>");
   });
-  
-  // Example Time Math
-  // -----------------------------------------------------------------------------
-  // Assume train start date of January 1, 2015
-  // Assume current date is March 1, 2016
-  
-  // We know that this is 15 months.
-  // Now we will create code in moment.js to confirm that any attempt we use meets this test case
+
   
