@@ -3,7 +3,7 @@
 Train app using Firebase. Adds new trains based on user input, and then calculates when the next train will arrive.
 
 
-## Prerequisites:
+## How it Works:
 
 Trains are made up by the users, and then logged to Goggle's Firebase. Once a user adds a train, the current time is automatically calculated using moment.js. 
 
