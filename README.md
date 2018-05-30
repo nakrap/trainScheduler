@@ -16,15 +16,6 @@ Trains are made up by the users, and then logged to Goggle's Firebase. Once a us
 4. Navigate to User 2's tab, and click the 'onTheWay' button.
 ```
 
-## Break down:
-
-The app requires a sequential order. 
-```
-- Once User 1 exists, the  option to create User 2 is available. 
-- Click the submit button.
-- Once the submit button is clicked, the application logs that information to Firebase. 
-- After the train is logged to Firebase, calculations are made and printed to the "Current Train Schedule" section. 
-```
 
 ## Deployment:
 ```
