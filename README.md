@@ -1,4 +1,4 @@
-# trainScheduler
+# Train Scheduler
 
 Train app using Firebase. Adds new trains based on user input, and then calculates when the next train will arrive.
 
