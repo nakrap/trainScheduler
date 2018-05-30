@@ -18,12 +18,12 @@ Trains are made up by the users, and then logged to Goggle's Firebase. Once a us
 
 
 ## Deployment:
-```
+
 https://nakrap.github.io/trainScheduler/
-```
+
 
 ## Built With:
-
+```
 HTML,
 CSS,
 Bootstrap,
@@ -31,3 +31,4 @@ Javascript,
 JQuery,
 Firebase,
 Moment.js
+```
